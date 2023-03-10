@@ -109,12 +109,7 @@
       thumbsDownGesture.addCurl(fp.Finger.Thumb, fp.FingerCurl.NoCurl);
       thumbsDownGesture.addDirection(fp.Finger.Thumb, fp.FingerDirection.VerticalDown, 1.0);
 
-
-      // configure gesture estimator
-      // add "✌🏻" and "👍" as sample gestures
       const knownGestures = [
-        // fp.Gestures.VictoryGesture,
-        // fp.Gestures.ThumbsUpGesture,
         pointLeftGesture,
         pointRightGesture,
         pointUpGesture,
@@ -124,7 +119,10 @@
 
       // load handpose model
       const model = await handpose.load();
-      console.log("Handpose model loaded");
+      if(model != null){
+        document.getElementById('loading').style.display = "none"
+        document.getElementById('main-content').style.display = "grid"
+      }
 
       // main estimation loop
       const estimateHands = async () => {
@@ -133,23 +131,10 @@
         ctx.clearRect(0, 0, config.video.width, config.video.height);
         resultLayer.innerText = '';
 
-        // get hand landmarks from video
-        // Note: Handpose currently only detects one hand at a time
-        // Therefore the maximum number of predictions is 1
         const predictions = await model.estimateHands(video, true);
 
         for(let i = 0; i < predictions.length; i++) {
 
-          // draw colored dots at each predicted joint position
-          // for(let part in predictions[i].annotations) {
-          //   for(let point of predictions[i].annotations[part]) {
-          //     drawPoint(ctx, point[0], point[1], 3, landmarkColors[part]);
-          //   }
-          // }
-
-          // estimate gestures based on landmarks
-          // using a minimum score of 9 (out of 10)
-          // gesture candidates with lower score will not be returned
           const est = GE.estimate(predictions[i].landmarks, 9);
 
           if(est.gestures[0] !== undefined){
@@ -157,15 +142,12 @@
 
             if(est.gestures[0].name == 'point_left'){
               x = x - 1 ;
-            //  console.log(est.gestures[0].name + " x: " + x.toFixed(2) + ", y: " + y.toFixed(2));
             } else if(est.gestures[0].name == 'point_right'){
               x = x + 1 ;
-            //   console.log(est.gestures[0].name + " x: " + x.toFixed(2) + ", y: " + y.toFixed(2));
             }
 
             if (est.gestures[0].name == 'point_up') {
               y = y - 1 ;
-            //   console.log(est.gestures[0].name + " x: " + x.toFixed(2) + ", y: " + y.toFixed(2));
             } else if (est.gestures[0].name == 'point_down') {
               y = y + 1;
             //   console.log(est.gestures[0].name + " x: " + x.toFixed(2) + ", y: " + y.toFixed(2));
@@ -198,7 +180,7 @@
       };
 
       estimateHands();
-      console.log("Starting predictions");
+      // console.log("Starting predictions");
     }
 
     async function initCamera(width, height, fps) {
@@ -247,7 +229,7 @@
       ).then(video => {
         video.play();
         video.addEventListener("loadeddata", event => {
-          console.log("Camera is ready");
+          // console.log("Camera is ready");
           main();
         });
       });
@@ -255,7 +237,7 @@
       const canvas = document.querySelector("#pose-canvas");
       canvas.width = config.video.width;
       canvas.height = config.video.height;
-      console.log("Canvas initialized");
+      // console.log("Canvas initialized");
     });
 
 

@@ -2,8 +2,19 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
-  <title>Handposer</title>
+  <title>Point A Sketch</title>
   <link rel="icon" type="image/x-icon" href="assets/favicon.png">
+  <meta property="og:title" content="Point A Sketch" />
+  <meta property="og:description" content="An ML experiment in recreating the classic Etch A Sketch by pointing the finger in different directions." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/meta-img.png" />
+  <meta property="og:url" content="https://atharvapatil.space/" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@_atharvapatil" />
+  <meta name="twitter:title" content="Point A Sketch" />
+  <meta name="twitter:description" content="An ML experiment in recreating the classic Etch A Sketch by pointing the finger in different directions." />
+  <meta name="twitter:image" content="assets/meta-img.png" />
 
   <!-- Require the peer dependencies of handpose. -->
   <script src="https://unpkg.com/@tensorflow/tfjs-core@3.7.0/dist/tf-core.js"></script>
@@ -22,7 +33,13 @@
   <link rel="stylesheet" href="style.css">
 </head>
   <body>
-    <div class="main-flex">
+
+    <div id="loading">
+      <h1 class="loading-text">Loading awesomeness...</h1>
+    </div>
+
+
+    <div class="main-flex" id="main-content">
   
       <div class="p5-container" >
         <div class="center">
@@ -81,7 +98,7 @@
                     </clipPath>
                   </defs>
                 </svg>
-                <h1>Pose Sketch</h1>
+                <h1>Point A Sketch</h1>
               </div>
             
               <div class="video">
@@ -104,7 +121,7 @@
             </div>
 
             <div>
-              <div class="share"><h6>Share your creations using <b>#PoseSketch</b></h6></div>
+              <div class="share"><h6>Share creations using <b>#PointASketch</b></h6></div>
              <p class="center-text"> Made with ❤️ by <a href="https://atharvapatil.space/" target="_blank">Atharva Patil</a></p>
             </div>
           </div>
