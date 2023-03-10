@@ -270,8 +270,6 @@ function setup() {
 }
 
 function draw() {
-    
-    console.log(x.toFixed(1), y.toFixed(1));
     ellipse(x, y, 8, 8);
 }
 
