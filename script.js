@@ -1,100 +1,94 @@
- const config = {
-      video: { width: 640, height: 420, fps: 30 }
-    };
+const config = {
+                video: 
+                  { width: 640, 
+                    height: 420, 
+                    fps: 30 
+                  }
+              };
 
-    let x = 480;
-    let y = 320;
-    let brushSize = 8;
-    let cnv;
+let x = 480;
+let y = 320;
+let brushSize = 6;
+let cnv;
+
+const gestureStrings = {
+  'point_left': '👈',
+  'point_right': '👉',
+  'point_up': '👆',
+  'point_down': '👇'
+};
     
+const pointLeftGesture = new fp.GestureDescription('point_left');
+  pointLeftGesture.addCurl(fp.Finger.Thumb, fp.FingerCurl.NoCurl);
+  pointLeftGesture.addDirection(fp.Finger.Thumb, fp.FingerDirection.HorizontalLeft, 1.0);
+  pointLeftGesture.addCurl(fp.Finger.Index, fp.FingerCurl.NoCurl);
+  pointLeftGesture.addDirection(fp.Finger.Index, fp.FingerDirection.HorizontalLeft, 1.0);
+  pointLeftGesture.addCurl(fp.Finger.Middle, fp.FingerCurl.FullCurl);
+  pointLeftGesture.addDirection(fp.Finger.Middle, fp.FingerDirection.HorizontalLeft, 1.0);
+  pointLeftGesture.addCurl(fp.Finger.Ring, fp.FingerCurl.FullCurl);
+  pointLeftGesture.addDirection(fp.Finger.Ring, fp.FingerDirection.HorizontalLeft, 1.0);
+  pointLeftGesture.addCurl(fp.Finger.Pinky, fp.FingerCurl.FullCurl);
+  pointLeftGesture.addDirection(fp.Finger.Pinky, fp.FingerDirection.HorizontalLeft, 1.0);
 
-    // const landmarkColors = {
-    //   thumb: 'red',
-    //   indexFinger: 'blue',
-    //   middleFinger: 'yellow',
-    //   ringFinger: 'green',
-    //   pinky: 'pink',
-    //   palmBase: 'white'
-    // };
+const pointRightGesture = new fp.GestureDescription('point_right');
+  pointRightGesture.addCurl(fp.Finger.Thumb, fp.FingerCurl.NoCurl);
+  pointRightGesture.addDirection(fp.Finger.Thumb, fp.FingerDirection.HorizontalRight, 1.0);
+  pointRightGesture.addCurl(fp.Finger.Index, fp.FingerCurl.NoCurl);
+  pointRightGesture.addDirection(fp.Finger.Index, fp.FingerDirection.HorizontalRight, 1.0);
+  pointRightGesture.addCurl(fp.Finger.Middle, fp.FingerCurl.FullCurl);
+  pointRightGesture.addDirection(fp.Finger.Middle, fp.FingerDirection.HorizontalRight, 1.0);
+  pointRightGesture.addCurl(fp.Finger.Ring, fp.FingerCurl.FullCurl);
+  pointRightGesture.addDirection(fp.Finger.Ring, fp.FingerDirection.HorizontalRight, 1.0);
+  pointRightGesture.addCurl(fp.Finger.Pinky, fp.FingerCurl.FullCurl);
+  pointRightGesture.addDirection(fp.Finger.Pinky, fp.FingerDirection.HorizontalRight, 1.0);
 
-    const pointLeftGesture = new fp.GestureDescription('point_left');
-      pointLeftGesture.addCurl(fp.Finger.Thumb, fp.FingerCurl.NoCurl);
-      pointLeftGesture.addDirection(fp.Finger.Thumb, fp.FingerDirection.HorizontalLeft, 1.0);
-      pointLeftGesture.addCurl(fp.Finger.Index, fp.FingerCurl.NoCurl);
-      pointLeftGesture.addDirection(fp.Finger.Index, fp.FingerDirection.HorizontalLeft, 1.0);
-      pointLeftGesture.addCurl(fp.Finger.Middle, fp.FingerCurl.FullCurl);
-      pointLeftGesture.addDirection(fp.Finger.Middle, fp.FingerDirection.HorizontalLeft, 1.0);
-      pointLeftGesture.addCurl(fp.Finger.Ring, fp.FingerCurl.FullCurl);
-      pointLeftGesture.addDirection(fp.Finger.Ring, fp.FingerDirection.HorizontalLeft, 1.0);
-      pointLeftGesture.addCurl(fp.Finger.Pinky, fp.FingerCurl.FullCurl);
-      pointLeftGesture.addDirection(fp.Finger.Pinky, fp.FingerDirection.HorizontalLeft, 1.0);
+const pointUpGesture = new fp.GestureDescription('point_up');
+  pointUpGesture.addCurl(fp.Finger.Thumb, fp.FingerCurl.NoCurl);
+  pointUpGesture.addDirection(fp.Finger.Thumb, fp.FingerDirection.VerticalUp, 0.9);
+  pointUpGesture.addDirection(fp.Finger.Thumb, fp.FingerDirection.DiagonalUpLeft, 0.9);
+  pointUpGesture.addDirection(fp.Finger.Thumb, fp.FingerDirection.DiagonalUpRight, 0.9);
+  pointUpGesture.addCurl(fp.Finger.Index, fp.FingerCurl.NoCurl);
+  pointUpGesture.addDirection(fp.Finger.Index, fp.FingerDirection.VerticalUp, 0.9);
+  pointUpGesture.addDirection(fp.Finger.Index, fp.FingerDirection.DiagonalUpLeft, 0.9);
+  pointUpGesture.addDirection(fp.Finger.Index, fp.FingerDirection.DiagonalUpRight, 0.9);
+  pointUpGesture.addCurl(fp.Finger.Middle, fp.FingerCurl.FullCurl);
+  pointUpGesture.addDirection(fp.Finger.Middle, fp.FingerDirection.VerticalUp, 0.9);
+  pointUpGesture.addDirection(fp.Finger.Middle, fp.FingerDirection.DiagonalUpLeft, 0.9);
+  pointUpGesture.addDirection(fp.Finger.Middle, fp.FingerDirection.DiagonalUpRight, 0.9);
+  pointUpGesture.addCurl(fp.Finger.Ring, fp.FingerCurl.FullCurl);
+  pointUpGesture.addDirection(fp.Finger.Ring, fp.FingerDirection.VerticalUp, 0.9);
+  pointUpGesture.addDirection(fp.Finger.Ring, fp.FingerDirection.DiagonalUpLeft, 0.9);
+  pointUpGesture.addDirection(fp.Finger.Ring, fp.FingerDirection.DiagonalUpRight, 0.9);
+  pointUpGesture.addCurl(fp.Finger.Pinky, fp.FingerCurl.FullCurl);
+  pointUpGesture.addDirection(fp.Finger.Pinky, fp.FingerDirection.VerticalUp, 0.9);
+  pointUpGesture.addDirection(fp.Finger.Pinky, fp.FingerDirection.DiagonalUpLeft, 0.9);
+  pointUpGesture.addDirection(fp.Finger.Pinky, fp.FingerDirection.DiagonalUpRight, 0.9);
 
-    const pointRightGesture = new fp.GestureDescription('point_right');
-      pointRightGesture.addCurl(fp.Finger.Thumb, fp.FingerCurl.NoCurl);
-      pointRightGesture.addDirection(fp.Finger.Thumb, fp.FingerDirection.HorizontalRight, 1.0);
-      pointRightGesture.addCurl(fp.Finger.Index, fp.FingerCurl.NoCurl);
-      pointRightGesture.addDirection(fp.Finger.Index, fp.FingerDirection.HorizontalRight, 1.0);
-      pointRightGesture.addCurl(fp.Finger.Middle, fp.FingerCurl.FullCurl);
-      pointRightGesture.addDirection(fp.Finger.Middle, fp.FingerDirection.HorizontalRight, 1.0);
-      pointRightGesture.addCurl(fp.Finger.Ring, fp.FingerCurl.FullCurl);
-      pointRightGesture.addDirection(fp.Finger.Ring, fp.FingerDirection.HorizontalRight, 1.0);
-      pointRightGesture.addCurl(fp.Finger.Pinky, fp.FingerCurl.FullCurl);
-      pointRightGesture.addDirection(fp.Finger.Pinky, fp.FingerDirection.HorizontalRight, 1.0);
-
-     const pointUpGesture = new fp.GestureDescription('point_up');
-      pointUpGesture.addCurl(fp.Finger.Thumb, fp.FingerCurl.NoCurl);
-      pointUpGesture.addDirection(fp.Finger.Thumb, fp.FingerDirection.VerticalUp, 0.9);
-      pointUpGesture.addDirection(fp.Finger.Thumb, fp.FingerDirection.DiagonalUpLeft, 0.9);
-      pointUpGesture.addDirection(fp.Finger.Thumb, fp.FingerDirection.DiagonalUpRight, 0.9);
-      pointUpGesture.addCurl(fp.Finger.Index, fp.FingerCurl.NoCurl);
-      pointUpGesture.addDirection(fp.Finger.Index, fp.FingerDirection.VerticalUp, 0.9);
-      pointUpGesture.addDirection(fp.Finger.Index, fp.FingerDirection.DiagonalUpLeft, 0.9);
-       pointUpGesture.addDirection(fp.Finger.Index, fp.FingerDirection.DiagonalUpRight, 0.9);
-      pointUpGesture.addCurl(fp.Finger.Middle, fp.FingerCurl.FullCurl);
-      pointUpGesture.addDirection(fp.Finger.Middle, fp.FingerDirection.VerticalUp, 0.9);
-      pointUpGesture.addDirection(fp.Finger.Middle, fp.FingerDirection.DiagonalUpLeft, 0.9);
-      pointUpGesture.addDirection(fp.Finger.Middle, fp.FingerDirection.DiagonalUpRight, 0.9);
-      pointUpGesture.addCurl(fp.Finger.Ring, fp.FingerCurl.FullCurl);
-      pointUpGesture.addDirection(fp.Finger.Ring, fp.FingerDirection.VerticalUp, 0.9);
-      pointUpGesture.addDirection(fp.Finger.Ring, fp.FingerDirection.DiagonalUpLeft, 0.9);
-      pointUpGesture.addDirection(fp.Finger.Ring, fp.FingerDirection.DiagonalUpRight, 0.9);
-      pointUpGesture.addCurl(fp.Finger.Pinky, fp.FingerCurl.FullCurl);
-      pointUpGesture.addDirection(fp.Finger.Pinky, fp.FingerDirection.VerticalUp, 0.9);
-      pointUpGesture.addDirection(fp.Finger.Pinky, fp.FingerDirection.DiagonalUpLeft, 0.9);
-      pointUpGesture.addDirection(fp.Finger.Pinky, fp.FingerDirection.DiagonalUpRight, 0.9);
-
-      const pointDownGesture = new fp.GestureDescription('point_down');
-        pointDownGesture.addCurl(fp.Finger.Thumb, fp.FingerCurl.NoCurl);
-        pointDownGesture.addDirection(fp.Finger.Thumb, fp.FingerDirection.VerticalDown, 0.9);
-        pointDownGesture.addDirection(fp.Finger.Thumb, fp.FingerDirection.DiagonalDownLeft, 0.9);
-        pointDownGesture.addDirection(fp.Finger.Thumb, fp.FingerDirection.DiagonalDownRight, 0.9);
-        pointDownGesture.addCurl(fp.Finger.Index, fp.FingerCurl.NoCurl);
-        pointDownGesture.addDirection(fp.Finger.Index, fp.FingerDirection.VerticalDown, 0.9);
-        pointDownGesture.addDirection(fp.Finger.Index, fp.FingerDirection.DiagonalDownLeft, 0.9);
-        pointDownGesture.addDirection(fp.Finger.Index, fp.FingerDirection.DiagonalDownRight, 0.9);
-        pointDownGesture.addCurl(fp.Finger.Middle, fp.FingerCurl.FullCurl);
-        pointDownGesture.addDirection(fp.Finger.Middle, fp.FingerDirection.VerticalDown, 0.9);
-        pointDownGesture.addDirection(fp.Finger.Middle, fp.FingerDirection.DiagonalDownLeft, 0.9);
-        pointDownGesture.addDirection(fp.Finger.Middle, fp.FingerDirection.DiagonalDownRight, 0.9);
-        pointDownGesture.addCurl(fp.Finger.Ring, fp.FingerCurl.FullCurl);
-        pointDownGesture.addDirection(fp.Finger.Ring, fp.FingerDirection.VerticalDown, 0.9);
-        pointDownGesture.addDirection(fp.Finger.Ring, fp.FingerDirection.DiagonalDownLeft, 0.9);
-        pointDownGesture.addDirection(fp.Finger.Ring, fp.FingerDirection.DiagonalDownRight, 0.9);
-        pointDownGesture.addCurl(fp.Finger.Pinky, fp.FingerCurl.FullCurl);
-        pointDownGesture.addDirection(fp.Finger.Pinky, fp.FingerDirection.VerticalDown, 0.9);
-        pointDownGesture.addDirection(fp.Finger.Pinky, fp.FingerDirection.DiagonalDownLeft, 0.9);
-        pointDownGesture.addDirection(fp.Finger.Pinky, fp.FingerDirection.DiagonalDownRight, 0.9);
+const pointDownGesture = new fp.GestureDescription('point_down');
+  pointDownGesture.addCurl(fp.Finger.Thumb, fp.FingerCurl.NoCurl);
+  pointDownGesture.addDirection(fp.Finger.Thumb, fp.FingerDirection.VerticalDown, 0.9);
+  pointDownGesture.addDirection(fp.Finger.Thumb, fp.FingerDirection.DiagonalDownLeft, 0.9);
+  pointDownGesture.addDirection(fp.Finger.Thumb, fp.FingerDirection.DiagonalDownRight, 0.9);
+  pointDownGesture.addCurl(fp.Finger.Index, fp.FingerCurl.NoCurl);
+  pointDownGesture.addDirection(fp.Finger.Index, fp.FingerDirection.VerticalDown, 0.9);
+  pointDownGesture.addDirection(fp.Finger.Index, fp.FingerDirection.DiagonalDownLeft, 0.9);
+  pointDownGesture.addDirection(fp.Finger.Index, fp.FingerDirection.DiagonalDownRight, 0.9);
+  pointDownGesture.addCurl(fp.Finger.Middle, fp.FingerCurl.FullCurl);
+  pointDownGesture.addDirection(fp.Finger.Middle, fp.FingerDirection.VerticalDown, 0.9);
+  pointDownGesture.addDirection(fp.Finger.Middle, fp.FingerDirection.DiagonalDownLeft, 0.9);
+  pointDownGesture.addDirection(fp.Finger.Middle, fp.FingerDirection.DiagonalDownRight, 0.9);
+  pointDownGesture.addCurl(fp.Finger.Ring, fp.FingerCurl.FullCurl);
+  pointDownGesture.addDirection(fp.Finger.Ring, fp.FingerDirection.VerticalDown, 0.9);
+  pointDownGesture.addDirection(fp.Finger.Ring, fp.FingerDirection.DiagonalDownLeft, 0.9);
+  pointDownGesture.addDirection(fp.Finger.Ring, fp.FingerDirection.DiagonalDownRight, 0.9);
+  pointDownGesture.addCurl(fp.Finger.Pinky, fp.FingerCurl.FullCurl);
+  pointDownGesture.addDirection(fp.Finger.Pinky, fp.FingerDirection.VerticalDown, 0.9);
+  pointDownGesture.addDirection(fp.Finger.Pinky, fp.FingerDirection.DiagonalDownLeft, 0.9);
+  pointDownGesture.addDirection(fp.Finger.Pinky, fp.FingerDirection.DiagonalDownRight, 0.9);
 
  
 
-    const gestureStrings = {
-      // 'thumbs_up': '👍',
-      // 'victory': '✌🏻',
-      'point_left': '👈',
-      'point_right': '👉',
-      'point_up': '👆',
-      'point_down': '👇'
-    };
+
 
     async function main() {
 
@@ -243,28 +237,28 @@
 
 
 function setup() {
-    cnv = createCanvas(960, 640);
-    cnv.parent('cnv-id');
-    frameRate(30);
-    background(36, 41, 46);
-    fill(255);
-    noStroke()
-    ellipse(480, 320, brushSize, brushSize);
+  cnv = createCanvas(960, 640);
+  cnv.parent('cnv-id');
+  frameRate(30);
+  background(36, 41, 46);
+  fill(255);
+  noStroke()
+  ellipse(480, 320, brushSize, brushSize);
 }
 
 function draw() {
-    ellipse(x, y, brushSize, brushSize);
+  ellipse(x, y, brushSize, brushSize);
 }
 
-function saveSketch(){
-    saveCanvas(cnv, "pose-sketch", "png"); 
+function saveSketch() {
+  saveCanvas(cnv, "pose-sketch", "png"); 
 }
 
-function resetSketch(){
-    background(36, 41, 46);
-    x = 480;
-    y = 320; 
-    fill(255);
-    noStroke()
-    ellipse(480, 320, brushSize, brushSize);
+function resetSketch() {
+  background(36, 41, 46);
+  x = 480;
+  y = 320; 
+  fill(255);
+  noStroke()
+  ellipse(480, 320, brushSize, brushSize);
 }
