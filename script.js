@@ -4,6 +4,7 @@
 
     let x = 480;
     let y = 320;
+    let brushSize = 8;
     let cnv;
     
 
@@ -248,11 +249,11 @@ function setup() {
     background(36, 41, 46);
     fill(255);
     noStroke()
-    ellipse(480, 320, 8, 8);
+    ellipse(480, 320, brushSize, brushSize);
 }
 
 function draw() {
-    ellipse(x, y, 8, 8);
+    ellipse(x, y, brushSize, brushSize);
 }
 
 function saveSketch(){
@@ -265,5 +266,5 @@ function resetSketch(){
     y = 320; 
     fill(255);
     noStroke()
-    ellipse(480, 320, 8, 8);
+    ellipse(480, 320, brushSize, brushSize);
 }
